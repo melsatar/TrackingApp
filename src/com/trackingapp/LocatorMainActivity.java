@@ -43,6 +43,7 @@ public class LocatorMainActivity extends MapActivity implements
 
 		// Getting reference to MapView
 		mapView = (MapView) findViewById(R.id.map_view);
+		PushService.subscribe(this, ParseUser.getCurrentUser().getObjectId() , LocatorMainActivity.class);
 
 		final TextView tvLocation = (TextView) findViewById(R.id.tv_location);
 		
@@ -61,7 +62,7 @@ public class LocatorMainActivity extends MapActivity implements
 				ParseQuery vehicle_location = new ParseQuery("Vehicle_GPS");
 				vehicle_location.whereEqualTo("vehicle_id",
 						object.getObjectId());
-				PushService.subscribe(LocatorMainActivity.this, (String) object.get("device"), LocatorMainActivity.class);
+				
 				vehicle_location.setLimit(10);
 				vehicle_location.orderByDescending("createdAt");
 				vehicle_location
