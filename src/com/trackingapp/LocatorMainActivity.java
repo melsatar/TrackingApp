@@ -4,16 +4,17 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
-import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.android.maps.GeoPoint;
@@ -25,15 +26,16 @@ import com.google.android.maps.OverlayItem;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.PushService;
 
+
 public class LocatorMainActivity extends MapActivity implements
 		LocationListener {
 
+	private static final int Request_code = 0;
 	private MapView mapView;
 
 	@Override
@@ -63,7 +65,7 @@ public class LocatorMainActivity extends MapActivity implements
 				vehicle_location.whereEqualTo("vehicle_id",
 						object.getObjectId());
 				
-				vehicle_location.setLimit(10);
+				vehicle_location.setLimit(20);
 				vehicle_location.orderByDescending("createdAt");
 				vehicle_location
 						.setCachePolicy(ParseQuery.CachePolicy.NETWORK_ELSE_CACHE);
@@ -105,6 +107,8 @@ public class LocatorMainActivity extends MapActivity implements
 								double longitude = Double.valueOf(PoistionList.get(i).getString("longitude"));
 								GeoPoint point = new GeoPoint((int)(latitude * 1E6), (int)(longitude*1E6));
 								// Getting MapController 
+								
+								
 								MapController mapController = mapView.getController();
 								mapController.animateTo(point);
 								List<Overlay> mapOverlays = mapView.getOverlays();
@@ -112,8 +116,11 @@ public class LocatorMainActivity extends MapActivity implements
 								CurrentLocationOverlay currentLocationOverlay = new CurrentLocationOverlay(drawable);
 								OverlayItem currentLocation = new OverlayItem(point, "Current Location", "Latitude : " + latitude + ", Longitude:" + longitude);
 								currentLocationOverlay.addOverlay(currentLocation);
+								
 								mapOverlays.add(currentLocationOverlay);
+								
 								mapController.setZoom(100);
+								
 
 							}
 
@@ -156,4 +163,31 @@ public class LocatorMainActivity extends MapActivity implements
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 		// TODO Auto-generated method stub
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.activity_locator_main, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+
+		case R.id.track_my_car:
+			System.out.println("you clicked on item " + item.getItemId());
+			Intent track = new Intent();
+
+			track.setClass(LocatorMainActivity.this, TrackingActivity.class);
+
+			startActivityForResult(track, Request_code);
+			return true;
+
+		}
+		return super.onOptionsItemSelected(item);
+
+	}
+	
 }

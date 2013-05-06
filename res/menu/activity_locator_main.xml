@@ -1,9 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <item
-        android:id="@+id/menu_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/menu_settings"/>
+        android:id="@+id/track_my_car"
+        android:icon="@drawable/ic_action_map"
+        android:showAsAction="ifRoom|withText"
+        android:title="Track my car"/>
 
 </menu>

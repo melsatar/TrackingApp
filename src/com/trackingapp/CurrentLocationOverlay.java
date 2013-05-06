@@ -2,8 +2,10 @@ package com.trackingapp;
 
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
@@ -37,4 +39,5 @@ public class CurrentLocationOverlay extends ItemizedOverlay<OverlayItem> {
 		Log.d("Tapped", mOverlays.get(arg0).getSnippet());
 		return true;
 	}
+
 }
